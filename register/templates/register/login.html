@@ -1,0 +1,29 @@
+{% extends "register/layout.html" %}
+
+{% block title %} Login {% endblock %}
+
+{% block body %}
+
+
+
+<form action="{% url 'login' %}" method="POST">
+{% csrf_token %}
+<div class="form-group">
+    <label class="form-label mt-4">Please login:</label>
+    {% if message %}
+    <p class="text-danger">{{ message }}</p>
+    {% endif %}
+    <div class="form-floating mb-3">
+      <input type="text" class="form-control" name="username" id="floatingInput" placeholder="Username">
+      <label for="floatingInput">Username</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" class="form-control" name="password" id="floatingPassword" placeholder="Password">
+      <label for="floatingPassword">Password</label>
+    </div>
+  </div>
+  <p class="submit-btn"><button type="submit" class="btn btn-primary">Login</button></p>
+</form>
+<p class="register">Don't have an account? <a href="{% url 'register' %}">Register here.</a></p>
+
+{% endblock %}

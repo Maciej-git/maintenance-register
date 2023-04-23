@@ -1,0 +1,69 @@
+{% extends "register/layout.html" %}
+
+{% block title %} Machine dashboard {% endblock %}
+
+{% block body %}
+<form action="{% url 'machines' activity='add' %}" method="POST">
+    {% csrf_token %}
+    <fieldset>
+      <legend>Add new machine</legend>
+      {% if message %}
+      <p class="text-danger">{{ message }}</p>
+      {% endif %}   
+      <div class="form-group">
+        <label for="manufacturer-field" class="form-label mt-4">Manufacturer</label>
+        <input type="text" class="form-control" id="manufacturer-field" name="manufacturer" placeholder="Enter manufacturer name">
+        <label for="type-field" class="form-label mt-4">Type</label>
+        <input type="text" class="form-control" id="type-field" name="type" placeholder="Enter machine type">
+        <label for="sn-field" class="form-label mt-4">Serial number</label>
+        <input type="text" class="form-control" id="sn-field" name="sn" placeholder="Enter serial number">
+        
+      </div>
+      <div class="form-group">
+        <label for="email-field" class="form-label mt-4">Construction year</label>
+        <input type="number" min="1900" max="2999"  class="form-control" id="year-field" name="year" placeholder="Enter construction year">
+      </div>
+      
+      <div class="form-group">
+        <label for="internal-field" class="form-label mt-4">Internal data</label>
+      </div>
+      <div class="input-group">
+        <span class="input-group-text mt-4" id="internal-field">Internal name</span>
+        <input type="text" aria-label="First name" class="form-control mt-4" placeholder="Enter internal name">
+        <input type="text" aria-label="Last name" class="form-control mt-4" placeholder="Enter internal number">
+      </div>
+      <div class="form-group">
+        <label for="location-select" class="form-label mt-4">Location</label>
+        <select class="form-select" id="location-select">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="group-select" class="form-label mt-4">Group</label>
+        <select class="form-select" id="group-select">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="condition-select" class="form-label mt-4">Machine overall condition</label>
+        <select class="form-select" id="condition-select">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+      </div>
+      <p class="submit-btn"><button type="submit" class="btn btn-primary">Save new machine</button></p>
+    </fieldset>
+  </form>
+
+{% endblock %}

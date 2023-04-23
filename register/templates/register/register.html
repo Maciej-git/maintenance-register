@@ -1,0 +1,39 @@
+{% extends "register/layout.html" %}
+
+{% block title %} Register {% endblock %}
+
+{% block body %}
+
+<form action="{% url 'register' %}" method="POST">
+    {% csrf_token %}
+    <fieldset>
+      <legend>Register</legend>
+      {% if message %}
+      <p class="text-danger">{{ message }}</p>
+      {% endif %}   
+      <div class="form-group">
+        <label for="name-field" class="form-label mt-4">Name</label>
+        <input type="text" class="form-control" id="name-field" name="name" placeholder="Enter your name">
+        <label for="lastname-field" class="form-label mt-4">Lastname</label>
+        <input type="text" class="form-control" id="name-field" name="lastname" placeholder="Enter your name">
+        <label for="username-field" class="form-label mt-4">Username</label>
+        <input type="text" class="form-control" id="username-field" name="username" placeholder="Enter your username">
+        
+      </div>
+      <div class="form-group">
+        <label for="email-field" class="form-label mt-4">Email address</label>
+        <input type="email" class="form-control" id="email-field" name="email" placeholder="Enter email">
+      </div>
+      <div class="form-group">
+        <label for="password-field" class="form-label mt-4">Password</label>
+        <input type="password" class="form-control" id="password-field" name="password" placeholder="Password">
+      </div>
+      <div class="form-group">
+        <label for="confirm-password" class="form-label mt-4">Confirm password</label>
+        <input type="password" class="form-control" id="confirm-password" name="confirmation"  placeholder="Confirm password">
+      </div>
+      <p class="submit-btn"><button type="submit" class="btn btn-primary">Submit</button></p>
+    </fieldset>
+  </form>
+
+{% endblock %}

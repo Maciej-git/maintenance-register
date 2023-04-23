@@ -1,0 +1,62 @@
+{% extends "register/layout.html" %}
+{% load static %}
+
+{% block title %} Select machine {% endblock %}
+
+{% block body %}
+<form method="POST">
+{% csrf_token %}
+<fieldset>
+<legend class="title">Set search parameters:</legend>
+<div class="form-group">
+    <label for="manufaturer-select" class="form-label mt-4">Manufacturer</label>
+    <select class="form-select" id="manufacturer-select" name="manufacturer">
+        <option selected disabled>Please select</option>
+    {% for manufacturer in manufacturers %}
+      <option>{{ manufacturer }}</option>
+    {% endfor %}
+    </select>
+  </div>
+  <div id="typeSelect"  class="form-group">
+    <label for="machineType" class="form-label mt-4">Machine type</label>
+    <select class="form-select" id="machineType" name="type">
+        <option disabled selected>Please select</option>
+        <div id="selectOptions"></div>
+    
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="sn-field" class="form-label mt-4">Serial number</label>
+    <input type="text" class="form-control" id="sn-field" name="sn" placeholder="Enter serial number">
+  </div>
+  <div class="form-group">
+    <label for="year-field" class="form-label mt-4">Construction year</label>
+    <input type="number" min="1900" max="2999"  class="form-control" id="year-field" name="const_year" placeholder="Enter construction year">
+  </div>
+  <div class="form-group">
+    <label for="symbol-intern" class="form-label mt-4">Internal symbol</label>
+    <input type="text" class="form-control" id="symbol-intern" name="intern_symbol" placeholder="Enter internal symbol">
+  </div>
+  <div class="form-group">
+    <label for="number-intern" class="form-label mt-4">Internal number</label>
+    <input type="number" min="1" max="9999"  class="form-control" id="number-intern" name="intern_no" placeholder="Enter internal number">
+  </div>
+  <div class="form-group">
+    <label for="location-select" class="form-label mt-4">Locationr</label>
+    <select class="form-select" id="location-select" name="location">
+        <option selected disabled>Please select</option>
+    {% for location in locations %}
+      <option>{{ location }}</option>
+    {% endfor %}
+    </select>
+  </div>
+</fieldset>
+<p class="submit-btn"><button type="submit" class="btn btn-primary">Start search</button></p>
+</form>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'register/types.js' %}"></script>
+{% endblock %}

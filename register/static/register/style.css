@@ -1,0 +1,138 @@
+div.form-group {
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.submit-btn {
+    margin-top: 1rem;
+    margin-left: 1rem;
+   
+}
+
+p.register {
+    margin-left: 1rem;
+}
+
+p.text-info {
+    padding: 2rem;
+}
+
+p.text-danger {
+    margin-left: 1rem;
+}
+
+span.input-group-text.mt-4 {
+    margin-left: 1rem;
+    
+}
+
+.main {
+    margin-top: 1rem; 
+}
+
+@media (max-width: 405px) {
+    div.btn-group, div#newButton {
+        display: grid;
+    }
+}
+
+@media (min-width: 430px) {
+    div.btn-group {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
+    div#newButton {
+        margin-left: 1rem;
+    }
+}
+
+#locations {
+    margin-top: 1rem;
+}
+
+#detailed {
+    display: none;
+    margin-top: 1rem;
+}
+
+#groups {
+    display: none;
+    margin-top: 1rem;
+}
+
+div.input-group.mb-3 {
+    margin-top: 1rem;
+}
+
+#selectLocation {
+    display: none;
+}
+
+.newElement {
+    color:green;
+    font-weight: bold;
+}
+
+legend.title {
+    margin-left: 1rem;
+}
+
+h5 {
+    margin-top: 1rem;
+    margin-left: 1rem;
+}
+
+#openRequests {
+    margin-top: 1rem;
+}
+
+#completedRequests {
+    margin-top: 1rem;
+    display: none;
+}
+
+#newRequests {
+    margin-top: 1rem;
+}
+
+#assignedRequests {
+    display: none;
+    margin-top: 1rem;
+}
+
+#archivedRequests {
+    display: none;
+    margin-top: 1rem;
+}
+
+.content {
+    display: block;
+}
+
+p.info {
+    margin-left: 1rem;
+}
+
+p.btnTask {
+    margin-top: 1rem;
+    display: inline-block;
+}
+
+button.btn {
+    margin-right: 5px;
+}
+
+.note {
+    display: none;
+}
+
+.cardMachine {
+   
+    margin-top: 1rem;
+}
+
+#taskNotes {
+    margin-left: auto;
+    margin-right: auto;
+}

@@ -1,0 +1,16 @@
+{% extends "register/layout.html" %}
+
+{% block title %} Search results {% endblock %}
+
+{% block body %}
+<form method="POST">
+    {% csrf_token %}
+    <fieldset>
+    <legend class="title">New request</legend>
+    <div class="form-group">
+    {{ form }}
+    <p class="submit-btn"><button type="submit" class="btn btn-primary">Send request</button></p>
+    </form>
+    </div>
+    </fieldset>
+{% endblock %}

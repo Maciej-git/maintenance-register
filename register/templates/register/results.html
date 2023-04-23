@@ -1,0 +1,63 @@
+{% extends "register/layout.html" %}
+
+{% load static %}
+
+{% block title %} Search results {% endblock %}
+
+{% block body %}
+<h5>Search results:</h5>
+<p>
+<div id="searchResults">
+    {% if machines %}
+    <div class="accordion" id="accordionResults">
+        {% for machine in machines %}
+        <div class="accordion-item" name="machine" value="{{ machine.id }}">
+          <h2 class="accordion-header" id="heading{{ machine.id }}">
+            <button class="accordion-button collapsed" name="machineItem" value="{{ machine.id }}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ machine.id }}" aria-expanded="true" aria-controls="collapse{{ machine.id }}">
+              {{ machine }}
+            </button>
+          </h2>
+          <div id="collapse{{ machine.id }}" class="accordion-collapse collapse collapse" aria-labelledby="heading{{ machine.id }}" data-bs-parent="#accordionResults">
+            <div class="accordion-body">
+                <h6>Manufacturer:</h6>{{ machine.manufacturer }}
+                <h6 class="cardMachine">Type:</h6>{{ machine.type }}
+                <h6 class="cardMachine">Sn:</h6>{{ machine.sn }}
+                <h6 class="cardMachine">Construction year:</h6>{{ machine.const_year }}
+                <h6 class="cardMachine">Internal symbol:</h6>{{ machine.intern_symbol }}
+                <h6 class="cardMachine">Internal no:</h6>{{ machine.intern_no }}
+                <h6 class="cardMachine">Location:</h6>{{ machine.location }}
+                <h6 class="cardMachine">Group:</h6>{{ machine.group }}
+                <hr>
+                <h6>Requests:</h6>
+                <p><ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                      New
+                      <span class="badge bg-info rounded-pill" name="newCount{{ machine.id }}">?</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                      Ongoing
+                      <span class="badge bg-warning rounded-pill" name="ongoingCount{{ machine.id }}">?</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                      Completed
+                      <span class="badge bg-success rounded-pill" name="completedCount{{ machine.id }}">?</span>
+                    </li>
+                  </ul>
+                </p>
+                <a href="{% url 'index' %}"><button type="button" class="btn btn-primary" >Go to requests</button></a>
+          </div>
+        </div>
+        {% endfor %}
+        
+        
+      </div>
+{% else %}
+<p class="text-info">Sorry, no results. Would you like to go back to <a href="{% url 'machines' activity='select' %}"> search parameters </a>?</p>
+{% endif %}
+</div>
+</p>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'register/check.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "register/layout.html" %}
+
+{% block title %} Logout {% endblock %}
+
+{% block body %}
+
+<p class="text-info">You are now successfuly logged out. Would you like to<a href="{% url 'login' %}"> login </a>again?</p>
+
+{% endblock %}

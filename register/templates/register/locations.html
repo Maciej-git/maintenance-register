@@ -1,0 +1,60 @@
+{% extends "register/layout.html" %}
+{% load static %}
+
+{% block title %} Locations&Groups {% endblock %}
+
+{% block body %}
+
+<div class="main">
+{% csrf_token %}
+  
+  <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+    <label class="btn btn-outline-primary" for="btnradio1">Main locations</label>
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+    <label class="btn btn-outline-primary" for="btnradio2">Detailed locations</label>
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+    <label class="btn btn-outline-primary" for="btnradio3">Machine groups</label>
+  </div>
+  <div id="selectLocation">
+    <div class="form-group">
+      <label for="locationOption" class="form-label mt-4">Select Main location:</label>
+      <select class="form-select" id="locationOption">
+        {% for location in locations %}
+        {% if location.name %}
+        <option>{{ location.name }}</option>
+        {% endif %}
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+  <div class="input-group mb-3">
+    <input type="text" id="addNew" class="form-control" placeholder="Type new element name" aria-label="Add new:" aria-describedby="button-addon2">
+    <button class="btn btn-primary" type="button" id="button-addon2">Save</button>
+  </div>
+</div>
+ <div id="locations">
+  <ul id="names">
+  {% for location in locations %}
+  <li>{{ location.name }}</li>
+  {% endfor %}
+  </ul>
+ </div>
+ <div id="detailed">
+  {{ form }} 
+  <ul id="areas"></ul>
+ </div>
+ <div id="groups">
+  <ul id="groupList">
+  {% for group in groups %}
+  <li>{{ group.name }}</li>
+  {% endfor %}
+  </ul>
+ </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'register/groups.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% if not notes %}
+      <p class="info">No notes for this task</p>
+{% else %}
+{% for note in notes %}
+<div class="card border-primary mb-3" style="max-width: 80rem; margin-left: auto; margin-right: auto;">
+    <div class="card-header">
+        {{ note.technician }} on {{ note.date }}
+    </div>
+    <div class="card-body">
+        
+        <p class="card-text">{{ note.text }}</p>
+    </div>
+</div>
+{% endfor %}
+<p><button type="button" class="btn btn-warning" name="notesBtnHide" value="{{ id }}">Hide notes</button></p>
+{% endif %}

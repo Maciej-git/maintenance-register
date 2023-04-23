@@ -1,0 +1,284 @@
+{% extends "register/layout.html" %}
+{% load static %}
+
+{% block title %} Maintenace dashboard {% endblock %}
+
+{% block body %}
+<h5>Welcome {{ user.username }}!</h5>
+
+<!-- User role = "Requestor"--> 
+{% if request.user.role == 3 %}
+  {% if requests %}
+    <p class="info">Your request(s):</p>
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+      <input type="radio" class="btn-check" name="btnradio" id="btnOpen" autocomplete="off" checked>
+      <label class="btn btn-outline-primary" for="btnOpen">Open</label>
+      <input type="radio" class="btn-check" name="btnradio" id="btnCompleted" autocomplete="off">
+      <label class="btn btn-outline-primary" for="btnCompleted">Solved</label>    
+    </div>
+
+    <!-- Open requests view -->
+    <div id="openRequests">
+    <div class="accordion" id="accordionOpen">
+    
+    
+    {% for request in requests %}
+
+    <!-- Request status: "New" -->
+    {% if request.status == 1 %}
+    
+      <div class="accordion-item" id="request{{ request.id }}">
+        <h2 class="accordion-header" id="headin{{ request.id }}">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ request.id }}" aria-expanded="true" aria-controls="collapse{{ request.id }}">
+            <span class="badge rounded-pill bg-info" style="margin-right: 5px;">New</span>{{ request }}
+          </button>
+        </h2>
+        <div id="collapse{{ request.id }}" class="accordion-collapse collapse " aria-labelledby="heading{{ request.id }}" data-bs-parent="#accordionOpen">
+          <div class="accordion-body">
+            <p>Issued on {{ request.date }}</p>
+            <p>Location: {{ request.machine.location }}</p>
+            {{ request.issue }}
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- Request status: "Ongoing" -->
+    {% elif request.status == 2 %}
+    
+      <div class="accordion-item" id="request{{ request.id}}">
+        <h2 class="accordion-header" id="heading{{ request.id }}">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ request.id }}" aria-expanded="true" aria-controls="collapse{{ request.id }}">
+            <span class="badge rounded-pill bg-warning" style="margin-right: 5px;">Ongoing</span>{{ request }}
+          </button>
+        </h2>
+        <div id="collapse{{ request.id }}" class="accordion-collapse collapse " aria-labelledby="heading{{ request.id }}" data-bs-parent="#accordionOpen">
+          <div class="accordion-body">
+            <p>Issued on {{ request.date }}</p>
+            <p>Location: {{ request.machine.location }}</p>
+            <p>Technician: {{ request.technician }}</p>
+            {{ request.issue }}
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- Request status: "Hold" -->
+    {% elif request.status == 3 %}
+    
+      <div class="accordion-item" id="request{{ request.id }}">
+        <h2 class="accordion-header" id="heading{{ request.id }}">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ request.id }}" aria-expanded="true" aria-controls="collapse{{ request.id }}">
+            <span class="badge rounded-pill bg-danger" style="margin-right: 5px;">Hold</span>{{ request }}
+          </button>
+        </h2>
+        <div id="collapse{{ request.id }}" class="accordion-collapse collapse " aria-labelledby="heading{{ request.id }}" data-bs-parent="#accordionOpen">
+          <div class="accordion-body">
+            <p>Issued on {{ request.date }}</p>
+            <p>Location: {{ request.machine.location }}</p>
+            <p>Technician: {{ request.technician }}</p>
+            {{ request.issue }}
+        </div>
+      </div>
+    </div>
+    
+    {% endif %}
+    {% endfor %}
+  </div>
+  </div>
+    
+
+  <!-- Completed requests view -->
+  <div id="completedRequests">
+    <div class="accordion" id="accordionClosed">
+    {% for request in requests %}
+    {% if request.status == 4 %}
+    
+      <div class="accordion-item" id="request{{ request.id }}">
+        <h2 class="accordion-header" id="heading{{ request.id }}">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ request.id }}" aria-expanded="true" aria-controls="collapse{{ request.id }}">
+            <span class="badge rounded-pill bg-success" style="margin-right: 5px;">Completed</span>{{ request }}
+          </button>
+        </h2>
+        <div id="collapse{{ request.id }}" class="accordion-collapse collapse " aria-labelledby="heading{{ request.id }}" data-bs-parent="#accordionClosed">
+          <div class="accordion-body">
+            <p>Issued on {{ request.date }}</p>
+            <p>Location: {{ request.machine.location }}</p>
+            <p>Technician: {{ request.technician }}</p>
+            {{ request.issue }}
+        </div>
+      </div>
+    </div>
+    
+  
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>
+  {% else %}
+  <p>You have no requests.</p>
+  {% endif %}
+
+{% endif %}
+
+<!-- User role = "Technician" and "Manager"-->
+{% if request.user.role == 2 or request.user.role == 1 %}
+  {% if requests %}
+  <p class="info">Your request(s):</p>
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+      <div id="newButton">
+      <input type="radio" class="btn-check" name="btnradio" id="btnNew" autocomplete="off" checked>
+      <label class="btn btn-outline-primary" for="btnNew">New
+        <span id="newRequestsAmmount" class="badge rounded-pill bg-danger"></span>
+        
+      </label>
+      </div>
+      <input type="radio" class="btn-check" name="btnradio" id="btnAssigned" autocomplete="off">
+      <label class="btn btn-outline-primary" for="btnAssigned">Assigned</label>
+      <input type="radio" class="btn-check" name="btnradio" id="btnArchived" autocomplete="off">
+      <label class="btn btn-outline-primary" for="btnArchived">Archived</label>
+    </div>
+
+    <!-- Requests assigned to logged user with "Technician" role -->
+
+    <!-- New requests view-->
+    <div id="newRequests">
+    </div>
+    
+    <!-- Assigned requests view -->
+    <div id="assignedRequests">
+      <div class="accordion" id="accordionAssigned">
+      {% for task in requests %}
+        <!-- Show all assigned requests if user role "Manager" or request assigned to currently loged user with "Technician" role -->
+        {% if request.user.role == 1 and task.status == 2 or task.status == 3 or request.user.role == 2 and task.technician == request.user and task.status == 2 or task.status == 3 %}
+        
+          <div class="accordion-item" id="accordion{{ task.id }}">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ task.id }}" aria-expanded="true" aria-controls="collapse{{ task.id }}">
+                
+                <!-- Create Badge "Ongoing" or "Hold" acccord to task status-->
+                {% if task.status == 2 %}
+                <span class="badge rounded-pill bg-warning" style="margin-right: 5px;">Ongoing</span>
+                {% elif task.status == 3 %}
+                <span class="badge rounded-pill bg-danger" style="margin-right: 5px;">Hold</span>
+                {% endif %}
+                {{ task }}
+              </button>
+            </h2>
+            <div id="collapse{{ task.id }}" class="accordion-collapse collapse " aria-labelledby="heading{{ task.id }}" data-bs-parent="#accordionAssigned">
+              <div class="accordion-body">
+                <p>Issued on {{ task.date }} by {{ task.user }}</p>
+                <p>Location: {{ task.machine.location }}</p>
+                <p>Technician: {{ task.technician }}</p>
+                {{ task.issue }}
+                {% if task.status != 3 %}
+                <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="statusTask" value="complete">
+                <input type="hidden" name="taskID" value="{{ task.id }}">
+                  {% if request.user.role == 1 %}
+                  {% csrf_token %}
+                  <input type="hidden" name="statusTask" value="accept">
+                  <input type="hidden" name="taskID" value="{{ task.id }}">
+                  <label for="selectTechnician" class="form-label mt-4">Technicians:</label>
+                <select class="form-select" id="selectTechnician" name="assignTechnician">
+                  <option disabled selected>Choose Technician</option>
+                  {% for technician in technicians %}
+                  <option value="{{ technician.id }}">{{ technician.first_name}} {{ technician.last_name }}</option>
+                  {% endfor %}
+                </select>
+                {% endif %}
+               
+                <p class="btnTask"><button type="submit" class="btn btn-success" name="complete" value="{{ task.id }}">
+                  {% if request.user.role == 2 %}
+                  Complete Task
+                  {% elif request.user.role == 1 %}
+                  Reassign Task
+                  {% endif %}
+                </button>
+                {% if request.user.role == 2 %}
+                <button type="button" class="btn btn-danger" name="hold" value="{{ task.id }}">Hold Task</button></p>
+                {% endif %}
+                </form>
+                
+                <p><div id="note{{ task.id }}" class="note">
+
+                  <!-- Create "Hold" status form -->
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <input type="hidden" name="statusTask" value="hold">
+                    <input type="hidden" name="request" value="{{ task.id }}">
+                    <input type="hidden" name="technician" value="{{ request.user.id }}">
+                  {{ form }}
+                  <p class="btnTask"><button type="submit" class="btn btn-danger" name="confirm" value="{{ task.id }}">Confirm</button>
+                  <button type="button" class="btn btn-warning" name="cancel" value="{{ task.id }}">Cancel</button></p>
+                
+                </form>
+              </div>
+ 
+                </p>
+
+                {% else %}
+                
+                <!-- Create "Resume" form -->
+                <form method="POST">
+                  {% csrf_token %}
+                <input type="hidden" name="statusTask" value="resume">  
+                <input type="hidden" name="resumeTask" value="{{ task.id }}">
+                <p class="btnTask"><button type="submit" class="btn btn-success" name="resume" value="{{ task.id }}">Resume Task</button></p>
+                </form>
+                {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      {% endfor %}
+      </div>
+    </div>
+
+  
+
+    <!-- Archived requests view -->
+    <div id="archivedRequests">
+      <div class="accordion" id="accordionArchived">
+      {% for task in requests %}
+      {% if task.status == 4 %}
+      
+        <div class="accordion-item" id="accordion{{ task.id }}">
+          <h2 class="accordion-header" id="heading{{ task.id }}">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ task.id }}" aria-expanded="true" aria-controls="collapse{{ task.id }}">
+              <span class="badge rounded-pill bg-success" style="margin-right: 5px;">Completed</span>{{ task }}
+            </button>
+          </h2>
+          <div id="collapse{{ task.id }}" class="accordion-collapse collapse " aria-labelledby="heading{{ task.id }}" data-bs-parent="#accordionAssigned">
+            <div class="accordion-body">
+              <p>Issued on {{ task.date }} by {{ task.user }}</p>
+              <p>Location: {{ task.machine.location }}</p>
+              <p>Completed on {{ task.closeDate}} by {{ task.technician}}</p>
+              {{ task.issue }}
+              
+              <p><p class="btnTask"><button type="button" class="btn btn-success" name="notesBtn" value="{{ task.id }}">Notes</button></p>
+                
+              <div id="taskNotes{{ task.id }}"></div>
+            
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+    </div>
+  {% else %}
+  <p>No requests.</p>
+  {% endif %}
+{% endif %}
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'register/requests.js' %}"></script>
+{% if request.user.role != 3%}
+<script src="{% static 'register/update.js' %}"></script>
+{% endif %}
+{% endblock %}

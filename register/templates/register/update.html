@@ -1,0 +1,51 @@
+<p id="tasksCount" hidden>{{ newTasks }}</p>
+{% if not newTasks %}
+      <p class="info">No new request(s).</p>
+      <p class="info"> Last checked on {% now "DATETIME_FORMAT" %}</p>
+      
+      {% else %}
+      <div class="accordion" id="accordionNew">
+      {% for task in tasks %}
+        {% if task.status == 1 %}
+        
+          <div class="accordion-item" id="task{{ task.id }}">
+            <h2 class="accordion-header" id="heading{{ task.id }}">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ task.id }}" aria-expanded="true" aria-controls="collapse{{ task.id }}">
+                <span class="badge rounded-pill bg-info" style="margin-right: 5px;">New!</span>{{ task }}
+              </button>
+            </h2>
+            <div id="collapse{{ task.id }}" class="accordion-collapse collapse " aria-labelledby="heading{{ task.id }}" data-bs-parent="#accordionNew">
+              <div class="accordion-body">
+                <p>Issued on {{ task.date }} by {{ task.user }}</p>
+                <p>Location: {{ task.machine.location }}</p>
+                {{ task.issue }}
+                <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="statusTask" value="accept">
+                <input type="hidden" name="taskID" value="{{ task.id }}">
+                {% if request.user.role == 1%}
+                <div class="form-group">
+                  <label for="selectTechnician" class="form-label mt-4">Technicians:</label>
+                  <select class="form-select" id="selectTechnician" name="assignTechnician">
+                    <option disabled selected>Choose Technician</option>
+                    {% for technician in technicians %}
+                    <option value="{{ technician.id }}">{{ technician.first_name}} {{ technician.last_name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                {% endif %}             
+                <p class="btnTask"><button type="submit" id="acceptBTN{{ task.id }}"  class="btn btn-info" value="{{ task.id }}">
+                  {% if request.user.role == 2 %}
+                  Accept task
+                  {% elif request.user.role == 1 %}
+                  Assign Task
+                  {% endif %}
+                </button></p>
+                </form>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+      </div>
+        {% endif %}
